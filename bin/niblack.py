@@ -11,7 +11,7 @@ def niblack(image, r, k):
             prefix_image_brightness[i + 1, j + 1] = image[i, j] + prefix_image_brightness[i + 1, j] + prefix_image_brightness[i, j + 1] - prefix_image_brightness[i, j]
             prefix_image_square[i + 1, j + 1] = image[i, j] ** 2 + prefix_image_square[i + 1, j] + prefix_image_square[i, j + 1] - prefix_image_square[i, j]
 
-    new_image = np.zeros((image.shape[0], image.shape[1]), dtype=np.float64)
+    new_image = np.zeros((image.shape[0], image.shape[1]), dtype=np.uint8)
 
     for i in range (image.shape[0]):
         for j in range (image.shape[1]):
@@ -34,7 +34,7 @@ def niblack(image, r, k):
 
     return new_image
 
-image_path = '0.jpg'
+image_path = '1.jpg'
 output_prefix = 'result'
 
 image = cv2.imread(image_path)
@@ -51,15 +51,16 @@ binary_image = niblack(gray_image, r, k)
 
 cv2.imwrite(f'{output_prefix}_binary.jpg', binary_image)
 
-fig, axes = plt.subplots(1, 2, figsize=(5, 5))
+fig, axes = plt.subplots(1, 2, figsize = (12, 6))
 
-axes[0].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB) if len(image.shape) == 3 else image, cmap='gray')
+axes[0].imshow(image, cmap = 'gray')
 axes[0].set_title('init')
 axes[0].axis('off')
-axes[1].imshow(binary_image, cmap='gray')
-axes[1].set_title(f'niblack (r={r}, k={k})')
+
+axes[1].imshow(binary_image, cmap = 'gray')
+axes[1].set_title(f'niblack (r = {r}, k = {k})')
 axes[1].axis('off')
 
 plt.tight_layout()
-plt.savefig(f'{output_prefix}_comparison.png', dpi=150, bbox_inches='tight')
+plt.savefig(f'{output_prefix}_comparison.png', dpi = 150, bbox_inches = 'tight')
 plt.close()
